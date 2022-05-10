@@ -15,6 +15,17 @@ void playerShoot() {
   if (abs(myBalls.get(0).vel.x) < 0.01 && abs(myBalls.get(0).vel.y) < 0.01) image(stick, 0, 0);
   imageMode(CENTER);
   popMatrix();
+  
+  
+  stroke(0);
+  strokeWeight(10);
+  pushMatrix();
+  translate(20, 20);
+  rotate(rotationPressed);
+  line(0, 0, tVel, 0);
+  popMatrix();
+  
+  println(tVelbegin + ", " + tVel);
 }
 
 void mousePressed() { // Rotate origin, mouseDragged ignoring Y changes, only X. Take X change, rotate back, and then apply velocity
@@ -25,11 +36,13 @@ void mousePressed() { // Rotate origin, mouseDragged ignoring Y changes, only X.
       pushMatrix();
       translate(myBalls.get(0).pos.x, myBalls.get(0).pos.y);
       rotate(rotationPressed);
-      tVelbegin = mouseX;
+      tVelbegin = mouseX - myBalls.get(0).pos.x;
       popMatrix();
     }
   }
 }
+
+// Main issue is, I need to get mouseX relative to ROTATED ball
 
 void mouseReleased() {
   if (gameState == PLAYERSHOOT) {
@@ -37,9 +50,12 @@ void mouseReleased() {
     pushMatrix();
     translate(myBalls.get(0).pos.x, myBalls.get(0).pos.y);
     rotate(rotationPressed);
-    tVel = abs(mouseX - tVelbegin);
+    tVel = abs(mouseX - myBalls.get(0).pos.x - tVelbegin);
     popMatrix();
-    velocity = new PVector(tVel * cos(-rotationPressed), tVel * sin(-rotationPressed)); // Still need to figure out how to only have drag in that direction
+    velocity = new PVector(tVel * cos(-rotationPressed), tVel * sin(-rotationPressed)); 
+    //velocity = new PVector(velocity.x * cos(rotationPressed) - velocity.y * sin(rotationPressed), velocity.y * cos(rotationPressed) + sin(rotationPressed)); // Vector rotation newX = x*cos(theta) - y*sin(theta), newY = y*cos(theta) + x*sin(theta)
+    
+    println(velocity);
     velocity.setMag(min(tVel, 40)); 
     velocity.x *= -1;
     myBalls.get(0).vel = velocity;
