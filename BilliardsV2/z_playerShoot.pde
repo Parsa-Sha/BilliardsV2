@@ -5,7 +5,10 @@ float testVelocity;
 float tVelbegin, tVel;
 float angle;
 
-void playerShoot() {
+PVector beginPressed, endPressed;
+PVector newVel;
+
+void playerShoot() { // We will get back to the shooting code, don't worry about this
   pushMatrix();
   translate(myBalls.get(0).pos.x, myBalls.get(0).pos.y);
   rotate(atan2(mouseY - myBalls.get(0).pos.y, mouseX - myBalls.get(0).pos.x) * int(!hasPressed));
@@ -15,21 +18,11 @@ void playerShoot() {
   if (abs(myBalls.get(0).vel.x) < 0.01 && abs(myBalls.get(0).vel.y) < 0.01) image(stick, 0, 0);
   imageMode(CENTER);
   popMatrix();
-  
-  
-  stroke(0);
-  strokeWeight(10);
-  pushMatrix();
-  translate(20, 20);
-  rotate(rotationPressed);
-  line(0, 0, tVel, 0);
-  popMatrix();
-  
-  println(tVelbegin + ", " + tVel);
 }
 
 void mousePressed() { // Rotate origin, mouseDragged ignoring Y changes, only X. Take X change, rotate back, and then apply velocity
   if (gameState == PLAYERSHOOT) {
+    /*
     if (!hasPressed) {
       hasPressed = true; // Vx = V * cos(angle), Vy = V * sin(angle)
       rotationPressed = atan2(mouseY - myBalls.get(0).pos.y, mouseX - myBalls.get(0).pos.x);
@@ -39,6 +32,9 @@ void mousePressed() { // Rotate origin, mouseDragged ignoring Y changes, only X.
       tVelbegin = mouseX - myBalls.get(0).pos.x;
       popMatrix();
     }
+    */
+    
+    beginPressed = new PVector(mouseX, mouseY);
   }
 }
 
@@ -46,21 +42,33 @@ void mousePressed() { // Rotate origin, mouseDragged ignoring Y changes, only X.
 
 void mouseReleased() {
   if (gameState == PLAYERSHOOT) {
-
+    /*
+    
     pushMatrix();
     translate(myBalls.get(0).pos.x, myBalls.get(0).pos.y);
     rotate(rotationPressed);
     tVel = abs(mouseX - myBalls.get(0).pos.x - tVelbegin);
     popMatrix();
-    velocity = new PVector(tVel * cos(-rotationPressed), tVel * sin(-rotationPressed)); 
-    //velocity = new PVector(velocity.x * cos(rotationPressed) - velocity.y * sin(rotationPressed), velocity.y * cos(rotationPressed) + sin(rotationPressed)); // Vector rotation newX = x*cos(theta) - y*sin(theta), newY = y*cos(theta) + x*sin(theta)
     
-    println(velocity);
+    velocity = new PVector(tVel * cos(-rotationPressed), tVel * sin(-rotationPressed)); 
+    //velocity = new PVector(velocity.x * cos(rotationPressed) - velocity.y * sin(rotationPressed), velocity.y * cos(rotationPressed) + velocity.x * sin(rotationPressed)); 
+    // Vector rotation newX = x*cos(theta) - y*sin(theta), newY = y*cos(theta) + x*sin(theta)
+    
     velocity.setMag(min(tVel, 40)); 
     velocity.x *= -1;
     myBalls.get(0).vel = velocity;
 
     hasPressed = false;
     gameState = CALCULATE;
+    
+    */
+    
+    
+    
+    // New NEW testing May 10
+    endPressed = new PVector(mouseX, mouseY);
+    newVel = beginPressed.sub(endPressed);
+    newVel.setMag(40);
+    myBalls.get(0).vel = newVel;
   }
 }

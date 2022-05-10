@@ -8,7 +8,6 @@
 
 
 // Collision
-// Pool stick
 // Ball enters holes
 // Scratch
 // All rules
@@ -23,6 +22,7 @@ void game() {
     objectBall.act();
   }
 
+  /*
   rect(85, 95, 370, 10); // Testing
   rect(505, 95, 370, 10);
   rect(85, 495, 370, 10);
@@ -30,7 +30,7 @@ void game() {
   rect(40, 135, 10, 325);
   rect(910, 135, 10, 325);
   ellipse(60, 115, 26, 26);
-
+  */
 
   if (newGame) { // Reset game code
     newGame = false;
@@ -71,11 +71,11 @@ void game() {
     }
   } // End of newGame code
   
+  
   for (int i = 0; i < myBalls.size(); i++) {
     for (int j = 0; j < myBalls.size(); j++) {
       if (i != j && dist(myBalls.get(i).pos.x, myBalls.get(i).pos.y, myBalls.get(j).pos.x, myBalls.get(j).pos.y) <= 26) {
-        myBalls.get(i).vel.mult(-1);
-        myBalls.get(j).vel.mult(-1);
+        
       }
     }
   }
