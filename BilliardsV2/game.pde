@@ -79,6 +79,10 @@ void game() {
       }
     }
   }
+  
+  // Distance between circles will be added to velocity
+  // Vel.add(distBetweenBalls) for both velocities
+  
 
   switch(gameState) {
   case PLAYERBEGIN:
